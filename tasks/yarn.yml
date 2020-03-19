@@ -26,18 +26,8 @@
 
 - name: "Yarn | Register existing installation status"
   set_fact:
-    yarn_install_state: true
+    yarn_install_state: "{{ yarn_result.rc != 0 }}"
   changed_when: false
-  when: '"yarn" in yarn_result.stdout'
-
-- name: "Yarn | Register existing installation status (true)"
-  set_fact:
-    yarn_install_state: false
-  changed_when: false
-  when:
-    - '"Usage" not in yarn_result.stdout'
-    - '"Yarn requires Node" not in yarn_result.stdout'
-    - '"is not supported, please use Node.js" not in yarn_result.stdout'
 
 - name: "Yarn | Include OS-specific tasks"
   include_tasks: "yarn-{{ ansible_os_family }}.yml"
